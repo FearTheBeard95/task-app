@@ -1,10 +1,11 @@
 const { Router } = require("express")
 const express = require("express")
 const {tasks} = require('../models/task')
+const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-router.post('/tasks', async (req, res)=>{
+router.post('/tasks', auth,async (req, res)=>{
     const task = new tasks(req.body)
 
     try {
@@ -15,7 +16,7 @@ router.post('/tasks', async (req, res)=>{
     }
 })
 
-router.get('/tasks', async (req, res)=>{
+router.get('/tasks', auth, async (req, res)=>{
     try {
         const task = await tasks.find({})
         res.status(302).send(task)
@@ -23,7 +24,7 @@ router.get('/tasks', async (req, res)=>{
         res.status(404).send()
     }
 })
-router.get('/tasks/:id', async (req, res)=>{
+router.get('/tasks/:id', auth, async (req, res)=>{
     const id = req.params.id
 
     try {
@@ -37,7 +38,7 @@ router.get('/tasks/:id', async (req, res)=>{
     }
 })
 
-router.patch('/tasks/:id', async (req, res)=>{
+router.patch('/tasks/:id', auth, async (req, res)=>{
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'completed']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -47,7 +48,6 @@ router.patch('/tasks/:id', async (req, res)=>{
     }
     try {
         const task = await tasks.findById(req.params.id)
-
         updates.forEach((update)=>{
             task[update] = req.body[update]
         })
@@ -62,7 +62,7 @@ router.patch('/tasks/:id', async (req, res)=>{
     }
 })
 
-router.delete('/tasks/:id', async (req,res)=>{
+router.delete('/tasks/:id', auth, async (req,res)=>{
     try {
         const task = await tasks.findByIdAndDelete(req.params.id)
 

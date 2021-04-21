@@ -39,6 +39,18 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    role: {
+        type: String,
+        required: [true, 'User role must be specified'],
+        trim: true,
+        validate(value){
+            const roles = ['admin', 'user']
+            const roleSearch = roles.find((role)=>role === value.toLowerCase())
+            if(!roleSearch){
+                throw new Error('invalid role')
+            }
+        }
+    },
     tokens: [{
         token: {
             type: String,
@@ -65,7 +77,6 @@ userSchema.methods.generateAuthToken = async function(){
 
     this.tokens = this.tokens.concat({ token })
     await this.save()
-
     return token
 }
 
