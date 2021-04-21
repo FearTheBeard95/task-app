@@ -80,6 +80,16 @@ userSchema.methods.generateAuthToken = async function(){
     return token
 }
 
+userSchema.methods.toJSON = function(){
+    const userObject = this.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+    delete userObject.role
+
+    return userObject
+}
+
 userSchema.pre('save', async function(next){
     const user = this
 

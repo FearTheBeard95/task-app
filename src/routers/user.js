@@ -54,25 +54,6 @@ router.post('/users/logoutAll', auth, async (req, res)=>{
 router.get('/users/me', auth, async (req, res) =>{
     res.send(req.user)
 })
-router.get('/users/admin', auth,async (req, res)=>{
-    try {
-        const user = await users.find({})
-        res.status(302).send(user)
-    } catch (error) {
-        res.status(500).send(error)
-    }
-})
-
-router.get('/users/:id', auth,async (req, res)=>{
-    const id = req.params.id
-
-    try {
-        const user = await users.findById(id)
-        res.status(302).send(user)
-    } catch (error) {
-        res.status(404).send()
-    }
-})
 
 router.patch('/users/:id', auth, async(req,res)=>{
     const updates = Object.keys(req.body)
