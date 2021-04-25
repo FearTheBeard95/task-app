@@ -6,6 +6,7 @@ const user = require('./models/user')
 const task = require('./models/task')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
+const multer = require('multer')
 
 const app = express()
 const port = process.env.PORT || 3000

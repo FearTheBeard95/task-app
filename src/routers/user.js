@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
 const {users} = require('../models/user')
 const auth = require('../middleware/auth')
 const user = require('../models/user')
@@ -85,4 +86,26 @@ router.delete('/users/me', auth, async(req, res)=>{
     }
 })
 
+const upload = multer({
+    dest: 'avatar',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb){
+        if(!file.originalname.match(/\.(jpg|jpeg|png)$/)){
+            return cb(new Error('Please upload an image file'))
+        }
+        cb(undefined, true)
+    }
+})
+
+router.post('/users/me/avatar', auth, upload.single('avatar') , async(req, res)=>{
+    try {
+        res.send()
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}, (error, req, res, next) =>{
+    res.status(400).send({error: error.message})
+})
 module.exports = router
