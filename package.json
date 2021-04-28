@@ -8,9 +8,12 @@
   "description": "task manager app from node.js udemy course",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "start": "node src/index.js",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js -e js,hbs"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "Carlos Sibalatani",
   "license": "MIT",
@@ -28,6 +31,7 @@
   "devDependencies": {
     "env-cmd": "^10.1.0",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }
